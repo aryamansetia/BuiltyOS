@@ -1,0 +1,183 @@
+### BuiltyOS API samples
+### Use this with VS Code REST Client extension or translate to curl/Postman.
+
+@baseUrl = http://localhost:5000/api
+@customerToken = REPLACE_CUSTOMER_JWT
+@agencyToken = REPLACE_AGENCY_JWT
+
+### Health
+GET {{baseUrl}}/health
+
+### Register customer
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Ravi Industries",
+  "email": "ravi@example.com",
+  "password": "Password123",
+  "phone": "9000011111",
+  "role": "customer",
+  "preferredLanguage": "en"
+}
+
+### Register agency user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Metro Logistics",
+  "email": "metro@example.com",
+  "password": "Password123",
+  "phone": "9000022222",
+  "role": "agency",
+  "preferredLanguage": "en"
+}
+
+### Login customer
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "customer@builtyos.com",
+  "password": "Password123"
+}
+
+### Login agency
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "agency@builtyos.com",
+  "password": "Password123"
+}
+
+### Agency profile create
+POST {{baseUrl}}/agency/create
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "agencyName": "Metro Cargo Express",
+  "city": "Delhi",
+  "gstNumber": "07ABCDE1234F1Z5",
+  "contactNumber": "9000022222"
+}
+
+### Add agency route
+POST {{baseUrl}}/agency/route
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "from": "Delhi",
+  "to": "Mumbai",
+  "basePricePerKg": 12,
+  "estimatedDays": 3
+}
+
+### Search agencies
+GET {{baseUrl}}/agency/search?from=Delhi&to=Mumbai
+
+### Create booking (customer)
+POST {{baseUrl}}/booking/create
+Authorization: Bearer {{customerToken}}
+Content-Type: application/json
+
+{
+  "agencyId": "REPLACE_AGENCY_ID",
+  "sourceCity": "Delhi",
+  "destinationCity": "Mumbai",
+  "goodsDescription": "Textile bundles",
+  "weightKg": 100,
+  "pickupDate": "2026-03-30",
+  "notes": "Handle with care"
+}
+
+### Get customer bookings
+GET {{baseUrl}}/booking/user
+Authorization: Bearer {{customerToken}}
+
+### Get agency bookings
+GET {{baseUrl}}/booking/agency
+Authorization: Bearer {{agencyToken}}
+
+### Create LR (agency)
+POST {{baseUrl}}/lr/create
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "bookingId": "REPLACE_BOOKING_ID",
+  "freightAmount": 1200,
+  "consignorName": "Ravi Industries",
+  "consigneeName": "Mumbai Distribution"
+}
+
+### Download LR mock document
+GET {{baseUrl}}/lr/REPLACE_LR_ID/pdf
+Authorization: Bearer {{agencyToken}}
+
+### Create vehicle
+POST {{baseUrl}}/vehicle/create
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "vehicleNumber": "DL03PQ9988",
+  "driverName": "Mahesh Driver",
+  "driverPhone": "9000033333",
+  "latitude": 28.6139,
+  "longitude": 77.2090
+}
+
+### Create dispatch challan and assign vehicle
+POST {{baseUrl}}/dispatch/create
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "lrId": "REPLACE_LR_ID",
+  "vehicleId": "REPLACE_VEHICLE_ID",
+  "remarks": "Dispatched from Delhi terminal",
+  "initialLatitude": 28.6139,
+  "initialLongitude": 77.2090
+}
+
+### Create arrival challan
+POST {{baseUrl}}/arrival/create
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "lrId": "REPLACE_LR_ID",
+  "hubLocation": "Mumbai Main Hub",
+  "remarks": "Reached destination hub"
+}
+
+### Create delivery record
+POST {{baseUrl}}/delivery/create
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "lrId": "REPLACE_LR_ID",
+  "recipientName": "Anil Warehouse",
+  "recipientPhone": "9000044444",
+  "proofOfDelivery": "Signed POD"
+}
+
+### Tracking by LR number
+GET {{baseUrl}}/tracking?lrNumber=REPLACE_LR_NUMBER
+
+### Manual GPS update (agency)
+POST {{baseUrl}}/gps/update
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "vehicleId": "REPLACE_VEHICLE_ID",
+  "latitude": 22.7196,
+  "longitude": 75.8577,
+  "speed": 44
+}

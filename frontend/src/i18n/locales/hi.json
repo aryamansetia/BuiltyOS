@@ -1,0 +1,137 @@
+{
+  "appName": "बिल्टीओएस",
+  "tagline": "स्थानीय ट्रांसपोर्ट एजेंसियों के लिए डिजिटल फ्रेट ऑपरेशंस",
+  "nav": {
+    "login": "लॉगिन",
+    "register": "रजिस्टर",
+    "logout": "लॉगआउट",
+    "tracking": "ट्रैकिंग",
+    "customerDashboard": "कस्टमर डैशबोर्ड",
+    "searchAgencies": "एजेंसियां खोजें",
+    "bookShipment": "शिपमेंट बुक करें",
+    "agencyDashboard": "एजेंसी डैशबोर्ड",
+    "bookingManagement": "बुकिंग प्रबंधन",
+    "documents": "दस्तावेज"
+  },
+  "auth": {
+    "fullName": "पूरा नाम",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "phone": "फोन",
+    "role": "भूमिका",
+    "customer": "कस्टमर",
+    "agency": "एजेंसी",
+    "loginTitle": "वापसी पर स्वागत है",
+    "registerTitle": "अपना अकाउंट बनाएं",
+    "submitLogin": "साइन इन",
+    "submitRegister": "अकाउंट बनाएं"
+  },
+  "common": {
+    "from": "कहां से",
+    "to": "कहां तक",
+    "search": "खोजें",
+    "submit": "सबमिट",
+    "language": "भाषा",
+    "loading": "लोड हो रहा है...",
+    "status": "स्थिति",
+    "actions": "कार्रवाई",
+    "notAvailable": "उपलब्ध नहीं",
+    "success": "सफल",
+    "error": "त्रुटि",
+    "select": "चुनें"
+  },
+  "customer": {
+    "searchTitle": "बेहतरीन ट्रांसपोर्ट एजेंसी खोजें",
+    "bookingTitle": "शिपमेंट बुकिंग बनाएं",
+    "dashboardTitle": "शिपमेंट इतिहास",
+    "trackingTitle": "LR नंबर से शिपमेंट ट्रैक करें",
+    "enterLr": "LR नंबर दर्ज करें",
+    "trackNow": "अभी ट्रैक करें"
+  },
+  "agency": {
+    "dashboardTitle": "एजेंसी ऑपरेशंस डैशबोर्ड",
+    "bookingTitle": "आने वाली बुकिंग प्रबंधन",
+    "documentTitle": "ट्रांसपोर्ट दस्तावेज़ केंद्र",
+    "createLr": "LR (बिल्टी) बनाएं",
+    "createDispatch": "डिस्पैच चालान बनाएं",
+    "createArrival": "आगमन चालान बनाएं",
+    "createDelivery": "डिलीवरी पुष्टि बनाएं",
+    "createVehicle": "वाहन जोड़ें"
+  },
+  "status": {
+    "Booked": "बुक्ड",
+    "Dispatched": "डिस्पैच्ड",
+    "Arrived": "पहुंचा",
+    "Delivered": "डिलीवर"
+  },
+  "landing": {
+    "badge": "लॉजिस्टिक्स SaaS प्लेटफॉर्म",
+    "headline": "अपने ट्रांसपोर्ट ऑपरेशंस को डिजिटाइज करें",
+    "subline": "मैन्युअल LR, डिस्पैच/अराइवल चालान और ट्रैकिंग अपडेट को एक यूनिफाइड डिजिटल प्लेटफॉर्म से बदलें।",
+    "ctaCustomer": "शिपमेंट बनाएं",
+    "ctaAgency": "एजेंसी प्रबंधित करें",
+    "heroTitle": "अपने ट्रांसपोर्ट ऑपरेशंस को डिजिटाइज करें",
+    "heroSubtitle": "मैन्युअल LR, डिस्पैच/अराइवल चालान और कॉल-आधारित अपडेट को एक जुड़े हुए डिजिटल सिस्टम से बदलें।",
+    "ctaCreateShipment": "शिपमेंट बनाएं",
+    "ctaManageAgency": "एजेंसी प्रबंधित करें",
+    "ctaTrackShipment": "शिपमेंट ट्रैक करें",
+    "trackPlaceholder": "LR नंबर दर्ज करें",
+    "trackCta": "ट्रैक",
+    "trackHint": "डेमो LR आज़माएं: {{lr}}",
+    "heroMetrics": {
+      "ops": "ऑपरेशंस विजिबिलिटी",
+      "reliability": "ट्रैकिंग विश्वसनीयता",
+      "lrTime": "औसत LR समय"
+    },
+    "previewTitle": "लाइव सिस्टम प्रीव्यू",
+    "previewSubtitle": "वर्किंग शिपमेंट स्नैपशॉट",
+    "previewStatusCurrent": "वर्तमान चरण",
+    "previewLrLabel": "LR नंबर",
+    "previewAgencyLabel": "एजेंसी",
+    "previewRouteLabel": "रूट",
+    "previewVehicleLabel": "वाहन",
+    "previewTimelineTitle": "शिपमेंट टाइमलाइन",
+    "timeline": {
+      "booked": "बुक्ड",
+      "dispatched": "डिस्पैच्ड",
+      "inTransit": "इन ट्रांजिट",
+      "delivered": "डिलीवर"
+    },
+    "featuresTitle": "मुख्य प्लेटफॉर्म फीचर्स",
+    "featuresSubtitle": "रोज़ाना ट्रांसपोर्ट ऑपरेशंस के लिए बनाया गया",
+    "features": {
+      "lr": {
+        "title": "डिजिटल LR जनरेशन",
+        "desc": "स्ट्रक्चर्ड डेटा के साथ तुरंत LR/बिल्टी बनाएं, बिना कागज़ी निर्भरता के।"
+      },
+      "dispatch": {
+        "title": "डिस्पैच और अराइवल प्रबंधन",
+        "desc": "एक ही फ्लो में वाहन और रूट संदर्भ के साथ चालान बनाएं।"
+      },
+      "delivery": {
+        "title": "डिलीवरी कन्फर्मेशन",
+        "desc": "रिसीवर डिटेल और प्रूफ अपडेट के साथ शिपमेंट क्लोज करें।"
+      },
+      "gps": {
+        "title": "GPS ट्रैकिंग",
+        "desc": "LR नंबर से मूवमेंट और टाइमलाइन विजिबिलिटी ट्रैक करें।"
+      }
+    },
+    "flowTitle": "BuiltyOS कैसे काम करता है",
+    "flowSubtitle": "बुकिंग से प्रूफ ऑफ डिलीवरी तक",
+    "flow": {
+      "bookShipment": "शिपमेंट बुक करें",
+      "generateLr": "LR बनाएं",
+      "dispatchAssign": "डिस्पैच और वाहन असाइन करें",
+      "trackGps": "GPS से ट्रैक करें",
+      "deliveryConfirmation": "डिलीवरी कन्फर्मेशन"
+    },
+    "trustTitle": "बढ़ती ट्रांसपोर्ट टीमों का भरोसा",
+    "trustSubtitle": "प्रेजेंटेशन के लिए डेमो मेट्रिक्स",
+    "metrics": {
+      "shipments": "प्रबंधित शिपमेंट",
+      "agencies": "ऑनबोर्डेड एजेंसियां",
+      "lr": "जनरेटेड LR"
+    }
+  }
+}

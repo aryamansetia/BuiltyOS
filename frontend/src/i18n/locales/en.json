@@ -1,0 +1,137 @@
+{
+  "appName": "BuiltyOS",
+  "tagline": "Digital freight operations for local transport agencies",
+  "nav": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "tracking": "Tracking",
+    "customerDashboard": "Customer Dashboard",
+    "searchAgencies": "Search Agencies",
+    "bookShipment": "Book Shipment",
+    "agencyDashboard": "Agency Dashboard",
+    "bookingManagement": "Booking Management",
+    "documents": "Documents"
+  },
+  "auth": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone",
+    "role": "Role",
+    "customer": "Customer",
+    "agency": "Agency",
+    "loginTitle": "Welcome Back",
+    "registerTitle": "Create Your Account",
+    "submitLogin": "Sign In",
+    "submitRegister": "Create Account"
+  },
+  "common": {
+    "from": "From",
+    "to": "To",
+    "search": "Search",
+    "submit": "Submit",
+    "language": "Language",
+    "loading": "Loading...",
+    "status": "Status",
+    "actions": "Actions",
+    "notAvailable": "Not available",
+    "success": "Success",
+    "error": "Error",
+    "select": "Select"
+  },
+  "customer": {
+    "searchTitle": "Find Best Transport Agencies",
+    "bookingTitle": "Create Shipment Booking",
+    "dashboardTitle": "Shipment History",
+    "trackingTitle": "Track Shipment by LR Number",
+    "enterLr": "Enter LR Number",
+    "trackNow": "Track Now"
+  },
+  "agency": {
+    "dashboardTitle": "Agency Operations Dashboard",
+    "bookingTitle": "Incoming Booking Management",
+    "documentTitle": "Transport Document Center",
+    "createLr": "Generate LR (Builty)",
+    "createDispatch": "Create Dispatch Challan",
+    "createArrival": "Create Arrival Challan",
+    "createDelivery": "Create Delivery Confirmation",
+    "createVehicle": "Add Vehicle"
+  },
+  "status": {
+    "Booked": "Booked",
+    "Dispatched": "Dispatched",
+    "Arrived": "Arrived",
+    "Delivered": "Delivered"
+  },
+  "landing": {
+    "badge": "Logistics SaaS Platform",
+    "headline": "Digitize Your Transport Operations",
+    "subline": "Replace manual LR, challans, and tracking with a unified digital platform.",
+    "ctaCustomer": "Create Shipment",
+    "ctaAgency": "Manage Agency",
+    "heroTitle": "Digitize Your Transport Operations",
+    "heroSubtitle": "Replace manual LR, challans, and tracking updates with a unified digital platform.",
+    "ctaCreateShipment": "Create Shipment",
+    "ctaManageAgency": "Manage Agency",
+    "ctaTrackShipment": "Track Shipment",
+    "trackPlaceholder": "Enter LR Number",
+    "trackCta": "Track",
+    "trackHint": "Try demo LR: {{lr}}",
+    "heroMetrics": {
+      "ops": "Operations Visibility",
+      "reliability": "Tracking Reliability",
+      "lrTime": "Avg LR Creation"
+    },
+    "previewTitle": "Live System Preview",
+    "previewSubtitle": "Working shipment snapshot",
+    "previewStatusCurrent": "Current Stage",
+    "previewLrLabel": "LR Number",
+    "previewAgencyLabel": "Agency",
+    "previewRouteLabel": "Route",
+    "previewVehicleLabel": "Vehicle",
+    "previewTimelineTitle": "Shipment Timeline",
+    "timeline": {
+      "booked": "Booked",
+      "dispatched": "Dispatched",
+      "inTransit": "In Transit",
+      "delivered": "Delivered"
+    },
+    "featuresTitle": "Core Platform Features",
+    "featuresSubtitle": "Built for daily transport operations",
+    "features": {
+      "lr": {
+        "title": "Digital LR Generation",
+        "desc": "Create LR/Builty instantly with structured data and no paper dependency."
+      },
+      "dispatch": {
+        "title": "Dispatch & Arrival Management",
+        "desc": "Generate dispatch and arrival challans with vehicle and route context in one flow."
+      },
+      "delivery": {
+        "title": "Delivery Confirmation",
+        "desc": "Capture recipient details and proof updates to close shipments cleanly."
+      },
+      "gps": {
+        "title": "GPS Tracking",
+        "desc": "Track shipment movement by LR number with timeline visibility for customers and agencies."
+      }
+    },
+    "flowTitle": "How BuiltyOS Works",
+    "flowSubtitle": "From booking to proof of delivery",
+    "flow": {
+      "bookShipment": "Book Shipment",
+      "generateLr": "Generate LR",
+      "dispatchAssign": "Dispatch & Assign Vehicle",
+      "trackGps": "Track via GPS",
+      "deliveryConfirmation": "Delivery Confirmation"
+    },
+    "trustTitle": "Trusted by Growing Transport Teams",
+    "trustSubtitle": "Demo metrics for presentation",
+    "metrics": {
+      "shipments": "Shipments Managed",
+      "agencies": "Agencies Onboarded",
+      "lr": "LR Generated"
+    }
+  }
+}
