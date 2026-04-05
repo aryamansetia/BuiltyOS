@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["customer", "agency"],
+      enum: ["customer", "agency", "worker"],
       default: "customer"
     },
     preferredLanguage: {

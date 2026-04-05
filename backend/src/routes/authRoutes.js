@@ -13,7 +13,10 @@ router.post(
     body("fullName").trim().notEmpty().withMessage("Full name is required"),
     body("email").isEmail().withMessage("Valid email is required"),
     body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
-    body("role").optional().isIn(["customer", "agency"]).withMessage("Role must be customer or agency"),
+    body("role")
+      .optional()
+      .isIn(["customer", "agency", "worker"])
+      .withMessage("Role must be customer, agency or working partner"),
     body("preferredLanguage")
       .optional()
       .isIn(["en", "hi", "ta"])

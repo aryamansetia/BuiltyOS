@@ -61,6 +61,55 @@ export const addRoute = asyncHandler(async (req, res) => {
   });
 });
 
+export const updateRoute = asyncHandler(async (req, res) => {
+  const { routeId } = req.params;
+  const { from, to, basePricePerKg, estimatedDays } = req.body;
+
+  const agency = await Agency.findOne({ ownerUser: req.user._id });
+  if (!agency) {
+    return res.status(404).json({ message: "Agency profile not found" });
+  }
+
+  const route = agency.routes.id(routeId);
+  if (!route) {
+    return res.status(404).json({ message: "Route not found" });
+  }
+
+  route.from = from;
+  route.to = to;
+  route.basePricePerKg = basePricePerKg;
+  route.estimatedDays = estimatedDays;
+
+  await agency.save();
+
+  return res.json({
+    message: "Route updated successfully",
+    route
+  });
+});
+
+export const deleteRoute = asyncHandler(async (req, res) => {
+  const { routeId } = req.params;
+
+  const agency = await Agency.findOne({ ownerUser: req.user._id });
+  if (!agency) {
+    return res.status(404).json({ message: "Agency profile not found" });
+  }
+
+  const route = agency.routes.id(routeId);
+  if (!route) {
+    return res.status(404).json({ message: "Route not found" });
+  }
+
+  route.deleteOne();
+  await agency.save();
+
+  return res.json({
+    message: "Route deleted successfully",
+    routes: agency.routes
+  });
+});
+
 export const searchAgencies = asyncHandler(async (req, res) => {
   const { from, to } = req.query;
   const agencies = await Agency.find(routeFilter(from, to)).select("agencyName city contactNumber rating routes");

@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 import axiosClient from "../../api/axiosClient";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-const cardClassName = "rounded-xl border border-brand-border bg-white p-6 shadow-card";
-const formGridClassName = "grid grid-cols-1 gap-4 md:grid-cols-2";
-const fieldWrapClassName = "mb-4 block";
-const labelClassName = "mb-1.5 block text-sm font-medium text-slate-600";
+const cardClassName = "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm";
+const formGridClassName = "grid grid-cols-1 gap-3 md:grid-cols-2";
+const fieldWrapClassName = "grid gap-1.5";
+const labelClassName = "text-sm font-medium text-slate-600";
 const controlClassName =
-  "w-full border border-brand-border px-4 py-2 rounded-lg bg-white text-sm text-brand-secondary outline-none ring-brand-primary/20 focus:ring-4";
+  "h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none ring-blue-200 focus:ring-2";
 const buttonClassName =
-  "w-full mt-4 rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 md:col-span-2";
+  "mt-2 inline-flex h-10 w-full items-center justify-center rounded-lg bg-blue-600 px-5 text-sm font-semibold text-white transition hover:bg-blue-700 md:col-span-2 md:w-auto md:justify-self-end";
 
 function DocumentCenterPage() {
   const { t } = useTranslation();
@@ -21,6 +21,7 @@ function DocumentCenterPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [activeStep, setActiveStep] = useState("vehicle");
 
   const [vehicleForm, setVehicleForm] = useState({
     vehicleNumber: "",
@@ -85,6 +86,34 @@ function DocumentCenterPage() {
   const bookedWithLr = useMemo(() => bookings.filter((item) => item.lr && item.status === "Booked"), [bookings]);
   const dispatched = useMemo(() => bookings.filter((item) => item.lr && item.status === "Dispatched"), [bookings]);
   const arrived = useMemo(() => bookings.filter((item) => item.lr && item.status === "Arrived"), [bookings]);
+
+  const stepItems = [
+    {
+      key: "vehicle",
+      title: t("agency.createVehicle"),
+      subtitle: "Add and verify vehicle details"
+    },
+    {
+      key: "lr",
+      title: t("agency.createLr"),
+      subtitle: "Generate LR for booked shipment"
+    },
+    {
+      key: "dispatch",
+      title: t("agency.createDispatch"),
+      subtitle: "Assign vehicle and dispatch"
+    },
+    {
+      key: "arrival",
+      title: t("agency.createArrival"),
+      subtitle: "Record destination arrival"
+    },
+    {
+      key: "delivery",
+      title: t("agency.createDelivery"),
+      subtitle: "Close shipment with POD"
+    }
+  ];
 
   const showSuccess = (text) => {
     setMessage(text);
@@ -219,26 +248,12 @@ function DocumentCenterPage() {
     return <LoadingSpinner label={t("common.loading")} />;
   }
 
-  return (
-    <section className="space-y-6">
-      <header className="flex items-center justify-between">
-        <h2 className="typo-page-title">{t("agency.documentTitle")}</h2>
-      </header>
-
-      {error ? (
-        <p className="rounded-lg border border-status-failed/30 bg-status-failed/10 px-4 py-2 text-sm text-status-failed">
-          {error}
-        </p>
-      ) : null}
-      {message ? (
-        <p className="rounded-lg border border-status-delivered/30 bg-status-delivered/10 px-4 py-2 text-sm text-status-delivered">
-          {message}
-        </p>
-      ) : null}
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+  const renderActiveStepForm = () => {
+    if (activeStep === "vehicle") {
+      return (
         <article className={cardClassName}>
-          <h3 className="typo-card-title mb-4">{t("agency.createVehicle")}</h3>
+          <h3 className="typo-card-title mb-1">{t("agency.createVehicle")}</h3>
+          <p className="typo-helper mb-4">Add vehicle and driver details for dispatch readiness.</p>
           <form className={formGridClassName} onSubmit={submitVehicle}>
             <label className={fieldWrapClassName}>
               <span className={labelClassName}>Vehicle Number</span>
@@ -274,9 +289,14 @@ function DocumentCenterPage() {
             </button>
           </form>
         </article>
+      );
+    }
 
+    if (activeStep === "lr") {
+      return (
         <article className={cardClassName}>
-          <h3 className="typo-card-title mb-4">{t("agency.createLr")}</h3>
+          <h3 className="typo-card-title mb-1">{t("agency.createLr")}</h3>
+          <p className="typo-helper mb-4">Generate LR from confirmed bookings before dispatch.</p>
           <form className={formGridClassName} onSubmit={submitLr}>
             <label className={`${fieldWrapClassName} md:col-span-2`}>
               <span className={labelClassName}>Booking</span>
@@ -328,9 +348,14 @@ function DocumentCenterPage() {
             </button>
           </form>
         </article>
+      );
+    }
 
+    if (activeStep === "dispatch") {
+      return (
         <article className={cardClassName}>
-          <h3 className="typo-card-title mb-4">{t("agency.createDispatch")}</h3>
+          <h3 className="typo-card-title mb-1">{t("agency.createDispatch")}</h3>
+          <p className="typo-helper mb-4">Assign vehicle and create dispatch with optional start coordinates.</p>
           <form className={formGridClassName} onSubmit={submitDispatch}>
             <label className={fieldWrapClassName}>
               <span className={labelClassName}>LR</span>
@@ -423,11 +448,14 @@ function DocumentCenterPage() {
             </button>
           </form>
         </article>
-      </div>
+      );
+    }
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    if (activeStep === "arrival") {
+      return (
         <article className={cardClassName}>
-          <h3 className="typo-card-title mb-4">{t("agency.createArrival")}</h3>
+          <h3 className="typo-card-title mb-1">{t("agency.createArrival")}</h3>
+          <p className="typo-helper mb-4">Record arrival details when shipment reaches destination hub.</p>
           <form className={formGridClassName} onSubmit={submitArrival}>
             <label className={fieldWrapClassName}>
               <span className={labelClassName}>LR</span>
@@ -467,57 +495,102 @@ function DocumentCenterPage() {
             </button>
           </form>
         </article>
+      );
+    }
 
-        <article className={cardClassName}>
-          <h3 className="typo-card-title mb-4">{t("agency.createDelivery")}</h3>
-          <form className={formGridClassName} onSubmit={submitDelivery}>
-            <label className={fieldWrapClassName}>
-              <span className={labelClassName}>LR</span>
-              <select
-                className={controlClassName}
-                value={deliveryForm.lrId}
-                onChange={(event) => setDeliveryForm((prev) => ({ ...prev, lrId: event.target.value }))}
-                required
-              >
-                <option value="">{t("common.select")}</option>
-                {arrived.map((booking) => (
-                  <option key={booking.lr._id} value={booking.lr._id}>
-                    {booking.lr.lrNumber}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className={fieldWrapClassName}>
-              <span className={labelClassName}>Recipient Name</span>
-              <input
-                className={controlClassName}
-                value={deliveryForm.recipientName}
-                onChange={(event) => setDeliveryForm((prev) => ({ ...prev, recipientName: event.target.value }))}
-                required
-              />
-            </label>
-            <label className={fieldWrapClassName}>
-              <span className={labelClassName}>Recipient Phone</span>
-              <input
-                className={controlClassName}
-                value={deliveryForm.recipientPhone}
-                onChange={(event) => setDeliveryForm((prev) => ({ ...prev, recipientPhone: event.target.value }))}
-              />
-            </label>
-            <label className={fieldWrapClassName}>
-              <span className={labelClassName}>Proof of Delivery</span>
-              <input
-                className={controlClassName}
-                value={deliveryForm.proofOfDelivery}
-                onChange={(event) => setDeliveryForm((prev) => ({ ...prev, proofOfDelivery: event.target.value }))}
-              />
-            </label>
-            <button className={buttonClassName} type="submit">
-              Complete Delivery
+    return (
+      <article className={cardClassName}>
+        <h3 className="typo-card-title mb-1">{t("agency.createDelivery")}</h3>
+        <p className="typo-helper mb-4">Capture recipient proof to complete the delivery process.</p>
+        <form className={formGridClassName} onSubmit={submitDelivery}>
+          <label className={fieldWrapClassName}>
+            <span className={labelClassName}>LR</span>
+            <select
+              className={controlClassName}
+              value={deliveryForm.lrId}
+              onChange={(event) => setDeliveryForm((prev) => ({ ...prev, lrId: event.target.value }))}
+              required
+            >
+              <option value="">{t("common.select")}</option>
+              {arrived.map((booking) => (
+                <option key={booking.lr._id} value={booking.lr._id}>
+                  {booking.lr.lrNumber}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={fieldWrapClassName}>
+            <span className={labelClassName}>Recipient Name</span>
+            <input
+              className={controlClassName}
+              value={deliveryForm.recipientName}
+              onChange={(event) => setDeliveryForm((prev) => ({ ...prev, recipientName: event.target.value }))}
+              required
+            />
+          </label>
+          <label className={fieldWrapClassName}>
+            <span className={labelClassName}>Recipient Phone</span>
+            <input
+              className={controlClassName}
+              value={deliveryForm.recipientPhone}
+              onChange={(event) => setDeliveryForm((prev) => ({ ...prev, recipientPhone: event.target.value }))}
+            />
+          </label>
+          <label className={fieldWrapClassName}>
+            <span className={labelClassName}>Proof of Delivery</span>
+            <input
+              className={controlClassName}
+              value={deliveryForm.proofOfDelivery}
+              onChange={(event) => setDeliveryForm((prev) => ({ ...prev, proofOfDelivery: event.target.value }))}
+            />
+          </label>
+          <button className={buttonClassName} type="submit">
+            Complete Delivery
+          </button>
+        </form>
+      </article>
+    );
+  };
+
+  return (
+    <section className="space-y-6 pt-1">
+      <header className="space-y-1">
+        <h2 className="typo-page-title">{t("agency.documentTitle")}</h2>
+        <p className="typo-body">Manage vehicles, LR, challans, and delivery updates from one workspace.</p>
+      </header>
+
+      {error ? (
+        <p className="rounded-lg border border-status-failed/30 bg-status-failed/10 px-4 py-2 text-sm text-status-failed">
+          {error}
+        </p>
+      ) : null}
+      {message ? (
+        <p className="rounded-lg border border-status-delivered/30 bg-status-delivered/10 px-4 py-2 text-sm text-status-delivered">
+          {message}
+        </p>
+      ) : null}
+
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        {stepItems.map((stepItem) => {
+          const isActive = stepItem.key === activeStep;
+
+          return (
+            <button
+              key={stepItem.key}
+              type="button"
+              onClick={() => setActiveStep(stepItem.key)}
+              className={`rounded-xl border px-3 py-3 text-left transition ${
+                isActive ? "border-blue-300 bg-blue-50" : "border-slate-200 bg-white hover:border-slate-300"
+              }`}
+            >
+              <p className="text-sm font-semibold text-slate-800">{stepItem.title}</p>
+              <p className="mt-1 text-xs text-slate-500">{stepItem.subtitle}</p>
             </button>
-          </form>
-        </article>
+          );
+        })}
       </div>
+
+      <div className="mx-auto w-full max-w-[980px]">{renderActiveStepForm()}</div>
     </section>
   );
 }

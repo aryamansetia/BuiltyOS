@@ -35,7 +35,13 @@ function RegisterPage() {
         ...form,
         preferredLanguage: i18n.language?.slice(0, 2) || "en"
       });
-      navigate(user.role === "agency" ? "/agency/dashboard" : "/customer/search");
+      if (user.role === "agency") {
+        navigate("/agency/dashboard");
+      } else if (user.role === "worker") {
+        navigate("/marketplace");
+      } else {
+        navigate("/customer/search");
+      }
     } catch (submitError) {
       setError(submitError.message);
     } finally {
@@ -68,6 +74,7 @@ function RegisterPage() {
           <select name="role" value={form.role} onChange={onChange}>
             <option value="customer">{t("auth.customer")}</option>
             <option value="agency">{t("auth.agency")}</option>
+            <option value="worker">{t("auth.worker")}</option>
           </select>
         </label>
 

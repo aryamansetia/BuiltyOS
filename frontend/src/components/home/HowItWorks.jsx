@@ -55,7 +55,7 @@ function HowItWorks() {
 	const { t } = useTranslation();
 
 	return (
-		<section className="rounded-3xl border border-brand-border bg-white p-7 shadow-card sm:p-8">
+		<section className="rounded-2xl border border-blue-200/60 bg-gradient-to-b from-blue-50/70 to-white p-6 shadow-card sm:p-8">
 			<header className="flex flex-col gap-2">
 				<p className="inline-flex w-fit rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-brand-primary">
 					{t("landing.flowSubtitle")}
@@ -65,18 +65,27 @@ function HowItWorks() {
 				</h3>
 			</header>
 
-			<ol className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+			<ol className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
 				{steps.map((step, index) => {
 					const Icon = StepIcons[index];
+					const isLastStep = index === steps.length - 1;
 
 					return (
-						<li
-							key={step}
-							className="relative rounded-2xl border border-brand-border bg-brand-background p-4 shadow-sm"
-						>
-							<span className="inline-grid h-7 w-7 place-items-center rounded-full bg-brand-primary text-xs font-bold text-white">
-								{index + 1}
-							</span>
+						<li key={step} className="relative rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
+							{!isLastStep ? (
+								<span
+									aria-hidden="true"
+									className="pointer-events-none absolute -right-3 top-1/2 hidden h-0.5 w-6 -translate-y-1/2 bg-blue-200 xl:block"
+								/>
+							) : null}
+
+							<div className="flex items-center gap-2">
+								<span className="inline-grid h-7 w-7 place-items-center rounded-full bg-brand-primary text-xs font-bold text-white">
+									{index + 1}
+								</span>
+								<p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Step {index + 1}</p>
+							</div>
+
 							<span className="mt-3 inline-grid h-10 w-10 place-items-center rounded-xl bg-blue-100 text-brand-primary">
 								<Icon />
 							</span>

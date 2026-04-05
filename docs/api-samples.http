@@ -4,6 +4,7 @@
 @baseUrl = http://localhost:5000/api
 @customerToken = REPLACE_CUSTOMER_JWT
 @agencyToken = REPLACE_AGENCY_JWT
+@workingPartnerToken = REPLACE_WORKING_PARTNER_JWT
 
 ### Health
 GET {{baseUrl}}/health
@@ -31,6 +32,19 @@ Content-Type: application/json
   "password": "Password123",
   "phone": "9000022222",
   "role": "agency",
+  "preferredLanguage": "en"
+}
+
+### Register working partner user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Rohit Driver",
+  "email": "worker@example.com",
+  "password": "Password123",
+  "phone": "9000055555",
+  "role": "worker",
   "preferredLanguage": "en"
 }
 
@@ -180,4 +194,101 @@ Content-Type: application/json
   "latitude": 22.7196,
   "longitude": 75.8577,
   "speed": 44
+}
+
+### =========================
+### Load marketplace module
+### =========================
+
+### Create transport load (agency)
+POST {{baseUrl}}/loads
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "origin": "Delhi",
+  "destination": "Jaipur",
+  "price": 15000,
+  "weight": 900,
+  "vehicleType": "Open Truck",
+  "notes": "Pickup by 7 PM"
+}
+
+### List loads (agency/working partner)
+GET {{baseUrl}}/loads?origin=Delhi&status=open
+Authorization: Bearer {{workingPartnerToken}}
+
+### Load details
+GET {{baseUrl}}/loads/REPLACE_LOAD_ID
+Authorization: Bearer {{workingPartnerToken}}
+
+### Working partner applies for load
+POST {{baseUrl}}/loads/REPLACE_LOAD_ID/apply
+Authorization: Bearer {{workingPartnerToken}}
+
+### Agency assigns working partner
+POST {{baseUrl}}/loads/REPLACE_LOAD_ID/assign
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "driverId": "REPLACE_WORKING_PARTNER_USER_ID"
+}
+
+### =========================
+### Jobs and recruitment module
+### =========================
+
+### Agency posts job
+POST {{baseUrl}}/jobs
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "title": "Senior Route Accountant",
+  "category": "accountant",
+  "location": "Mumbai",
+  "salary": 35000,
+  "description": "Manage daily freight ledgers, route balances, and POD reconciliations."
+}
+
+### List jobs
+GET {{baseUrl}}/jobs?category=driver&location=Delhi
+Authorization: Bearer {{workingPartnerToken}}
+
+### Working partner applies to job
+POST {{baseUrl}}/jobs/REPLACE_JOB_ID/apply
+Authorization: Bearer {{workingPartnerToken}}
+Content-Type: application/json
+
+{
+  "experience": "4 years in interstate line-haul operations"
+}
+
+### Working partner submits open application (no active job required)
+POST {{baseUrl}}/applications/open
+Authorization: Bearer {{workingPartnerToken}}
+Content-Type: application/json
+
+{
+  "applicantName": "Rohit Driver",
+  "phone": "9000055555",
+  "experience": "6 years in intercity fleet operations"
+}
+
+### Agency sees live open applications
+GET {{baseUrl}}/applications/open
+Authorization: Bearer {{agencyToken}}
+
+### Agency views applications for a job
+GET {{baseUrl}}/jobs/REPLACE_JOB_ID/applications
+Authorization: Bearer {{agencyToken}}
+
+### Agency updates application status
+PATCH {{baseUrl}}/applications/REPLACE_APPLICATION_ID
+Authorization: Bearer {{agencyToken}}
+Content-Type: application/json
+
+{
+  "status": "accepted"
 }

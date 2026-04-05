@@ -1,12 +1,14 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 import {
   addRoute,
   createAgency,
+  deleteRoute,
   getMyAgency,
   listAgencies,
-  searchAgencies
+  searchAgencies,
+  updateRoute
 } from "../controllers/agencyController.js";
 import { authorizeRoles, protect } from "../middleware/authMiddleware.js";
 import { validateRequest } from "../middleware/validateRequest.js";
@@ -38,6 +40,30 @@ router.post(
   ],
   validateRequest,
   addRoute
+);
+
+router.patch(
+  "/route/:routeId",
+  protect,
+  authorizeRoles("agency"),
+  [
+    param("routeId").isMongoId().withMessage("Valid route id is required"),
+    body("from").trim().notEmpty().withMessage("Route origin is required"),
+    body("to").trim().notEmpty().withMessage("Route destination is required"),
+    body("basePricePerKg").isFloat({ gt: 0 }).withMessage("basePricePerKg must be greater than 0"),
+    body("estimatedDays").isInt({ min: 1 }).withMessage("estimatedDays must be 1 or more")
+  ],
+  validateRequest,
+  updateRoute
+);
+
+router.delete(
+  "/route/:routeId",
+  protect,
+  authorizeRoles("agency"),
+  [param("routeId").isMongoId().withMessage("Valid route id is required")],
+  validateRequest,
+  deleteRoute
 );
 
 router.get("/search", searchAgencies);

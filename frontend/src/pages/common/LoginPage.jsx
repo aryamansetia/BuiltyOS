@@ -29,7 +29,13 @@ function LoginPage() {
 
     try {
       const user = await login(form);
-      navigate(user.role === "agency" ? "/agency/dashboard" : "/customer/dashboard");
+      if (user.role === "agency") {
+        navigate("/agency/dashboard");
+      } else if (user.role === "worker") {
+        navigate("/marketplace");
+      } else {
+        navigate("/customer/dashboard");
+      }
     } catch (submitError) {
       setError(submitError.message);
     } finally {
