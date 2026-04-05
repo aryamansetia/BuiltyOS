@@ -2,6 +2,17 @@
 
 Production-ready MVP to digitize local goods transport agency workflows and connect agencies with business customers.
 
+## Recent upgrades (April 2026)
+
+- Agency dashboard redesigned into a modular SaaS layout (action bar, KPI cards, route management, operations panel, activity feed).
+- Incoming Booking Management upgraded into an interactive data interface with search, status tabs, row actions, expandable details, and pagination.
+- Worker role introduced with workforce modules:
+  - Transport Load Marketplace
+  - Jobs and recruitment workflow
+  - Open applications pipeline
+- New backend modules and APIs for loads, jobs, and applications.
+- Tracking page upgraded to a live OpenStreetMap-based view using React Leaflet.
+
 ## What this project solves
 
 This platform replaces manual transport processes with a connected digital flow:
@@ -19,8 +30,8 @@ Shipment status progression:
 
 ## Tech stack
 
-- Frontend: React + React Router + Axios + i18next
-- Backend: Node.js + Express + JWT Auth
+- Frontend: React + React Router + Axios + i18next + React Leaflet + Leaflet
+- Backend: Node.js + Express + JWT Auth + express-validator
 - Database: MongoDB + Mongoose
 - Security: bcrypt password hashing + JWT-protected APIs + role-based access
 
@@ -44,6 +55,8 @@ BuiltyOS/
     src/
       api/
       components/
+        agency/
+          bookings/
       context/
       i18n/
         locales/
@@ -51,6 +64,7 @@ BuiltyOS/
         agency/
         common/
         customer/
+        workforce/
       styles/
     .env.example
     package.json
@@ -128,6 +142,11 @@ Frontend URL: `http://localhost:5173`
   - Email: `customer@builtyos.com`
   - Password: `Password123`
 
+- Worker user
+  - Not seeded by default.
+  - Create through register API/UI with `role: worker`.
+  - Sample payload is available in `docs/api-samples.http`.
+
 Seed also prints a sample LR number for tracking test.
 
 ## API modules implemented
@@ -142,6 +161,8 @@ Seed also prints a sample LR number for tracking test.
 
 - `POST /api/agency/create`
 - `POST /api/agency/route`
+- `PATCH /api/agency/route/:routeId`
+- `DELETE /api/agency/route/:routeId`
 - `GET /api/agency/search?from=&to=`
 - `GET /api/agency/`
 - `GET /api/agency/me`
@@ -171,6 +192,24 @@ Seed also prints a sample LR number for tracking test.
 - `POST /api/vehicle/create`
 - `GET /api/vehicle/`
 
+### Loads marketplace
+
+- `POST /api/loads`
+- `GET /api/loads`
+- `GET /api/loads/:id`
+- `POST /api/loads/:id/apply`
+- `POST /api/loads/:id/assign`
+
+### Jobs and applications
+
+- `POST /api/jobs`
+- `GET /api/jobs`
+- `POST /api/jobs/:id/apply`
+- `GET /api/jobs/:id/applications`
+- `POST /api/applications/open`
+- `GET /api/applications/open`
+- `PATCH /api/applications/:id`
+
 ## Multilingual support
 
 UI is implemented with i18next and language persistence in localStorage (`builtyos_language`):
@@ -183,7 +222,7 @@ UI is implemented with i18next and language persistence in localStorage (`builty
 
 - Password hashing with bcryptjs
 - JWT authentication for protected APIs
-- Role authorization (`customer`, `agency`)
+- Role authorization (`customer`, `agency`, `worker`)
 - Input validation with express-validator
 - Centralized error middleware
 - MVC-ish backend organization
@@ -196,6 +235,13 @@ Agency dashboard includes basic analytics:
 - Total bookings
 - In-transit shipments
 - Delivered shipments
+
+Agency UI also includes:
+
+- Route CRUD controls (add/edit/delete)
+- Operations summary panel
+- Activity feed
+- Action-driven booking management table
 
 ## Quick validation checklist
 
@@ -212,4 +258,5 @@ Agency dashboard includes basic analytics:
 
 - GPS updates can be posted manually using `/api/gps/update`.
 - Background GPS simulation auto-runs on backend startup for active vehicles.
-- Frontend map area is mocked with coordinates for MVP simplicity.
+- Tracking page renders live map tiles via OpenStreetMap + React Leaflet.
+- For quick API testing, use `docs/api-samples.http`.
