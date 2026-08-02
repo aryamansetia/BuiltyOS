@@ -68,6 +68,17 @@ export const AuthProvider = ({ children }) => {
     return data.user;
   };
 
+  const sendOTP = async (email) => {
+    const { data } = await axiosClient.post("/auth/send-otp", { email });
+    return data;
+  };
+
+  const verifyOTP = async (payload) => {
+    const { data } = await axiosClient.post("/auth/verify-otp", payload);
+    saveSession(data.token, data.user);
+    return data.user;
+  };
+
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -82,6 +93,8 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated: Boolean(token && user),
       login,
       register,
+      sendOTP,
+      verifyOTP,
       logout
     }),
     [token, user]

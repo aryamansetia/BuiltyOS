@@ -1,4 +1,6 @@
 import User from "../models/User.js";
+import OTP from "../models/OTP.js";
+import { sendOTPEmail } from "../utils/sendEmail.js";
 import { signToken } from "../utils/jwt.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
@@ -62,4 +64,62 @@ export const login = asyncHandler(async (req, res) => {
 
 export const me = asyncHandler(async (req, res) => {
   return res.json({ user: sanitizeUser(req.user) });
+});
+
+export const sendOTP = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const normalizedEmail = email.toLowerCase().trim();
+
+  // Generate random 6-digit OTP code
+  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+  // Delete any existing OTPs for this email
+  await OTP.deleteMany({ email: normalizedEmail });
+
+  // Save new OTP code
+  await OTP.create({
+    email: normalizedEmail,
+    otp: otpCode
+  });
+
+  // Send Email
+  await sendOTPEmail(normalizedEmail, otpCode);
+
+  return res.json({
+    message: "Verification code sent to email successfully"
+  });
+});
+
+export const verifyOTP = asyncHandler(async (req, res) => {
+  const { email, otp, fullName, role } = req.body;
+  const normalizedEmail = email.toLowerCase().trim();
+
+  const record = await OTP.findOne({ email: normalizedEmail, otp });
+
+  if (!record) {
+    return res.status(400).json({ message: "Invalid or expired OTP code" });
+  }
+
+  // Delete consumed OTP
+  await OTP.deleteMany({ email: normalizedEmail });
+
+  let user = await User.findOne({ email: normalizedEmail });
+
+  // Auto-register user if logging in with email OTP for the first time
+  if (!user) {
+    user = await User.create({
+      fullName: fullName || normalizedEmail.split("@")[0],
+      email: normalizedEmail,
+      password: Math.random().toString(36).slice(-10) + "Aa1!",
+      role: role || "customer"
+    });
+  }
+
+  const token = signToken(user._id, user.role);
+
+  return res.json({
+    message: "Email verification successful",
+    token,
+    user: sanitizeUser(user)
+  });
 });
