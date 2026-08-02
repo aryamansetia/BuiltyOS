@@ -15,16 +15,27 @@ const sanitizeUser = (user) => ({
 });
 
 export const register = asyncHandler(async (req, res) => {
-  const { fullName, email, password, phone, role, preferredLanguage } = req.body;
+  const { fullName, email, password, phone, role, preferredLanguage, otp } = req.body;
+  const normalizedEmail = email.toLowerCase().trim();
 
-  const existingUser = await User.findOne({ email: email.toLowerCase() });
+  // Validate OTP code if provided or enforced
+  if (otp) {
+    const otpRecord = await OTP.findOne({ email: normalizedEmail, otp });
+    if (!otpRecord) {
+      return res.status(400).json({ message: "Invalid or expired email verification code" });
+    }
+    // Delete verified OTP
+    await OTP.deleteMany({ email: normalizedEmail });
+  }
+
+  const existingUser = await User.findOne({ email: normalizedEmail });
   if (existingUser) {
     return res.status(409).json({ message: "Email is already registered" });
   }
 
   const user = await User.create({
     fullName,
-    email,
+    email: normalizedEmail,
     password,
     phone,
     role,
