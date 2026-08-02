@@ -15,9 +15,7 @@ import { generateDocNumber } from "../utils/docNumber.js";
 
 dotenv.config();
 
-const seedData = async () => {
-  await connectDB();
-
+export const seedData = async () => {
   await Promise.all([
     GPSLog.deleteMany({}),
     DeliveryRecord.deleteMany({}),
@@ -248,16 +246,10 @@ const seedData = async () => {
     }
   ]);
 
-  console.log("Seed completed");
-  console.log("Agency Login: agency@builtyos.com / Password123");
-  console.log("Customer Login: customer@builtyos.com / Password123");
-  console.log(`Track with LR: ${transitLr.lrNumber}`);
-
-  await mongoose.connection.close();
+  return {
+    agencyEmail: "agency@builtyos.com",
+    customerEmail: "customer@builtyos.com",
+    password: "Password123",
+    transitLrNumber: transitLr.lrNumber
+  };
 };
-
-seedData().catch(async (error) => {
-  console.error("Seed failed:", error.message);
-  await mongoose.connection.close();
-  process.exit(1);
-});

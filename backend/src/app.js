@@ -18,6 +18,8 @@ import trackingRoutes from "./routes/trackingRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notFound } from "./middleware/notFound.js";
 
+import { seedData } from "./seed/seedData.js";
+
 const app = express();
 
 app.disable("x-powered-by");
@@ -42,6 +44,18 @@ app.use(morgan("dev"));
 
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", service: "builtyos-backend" });
+});
+
+app.get("/api/seed-database", async (_req, res, next) => {
+  try {
+    const result = await seedData();
+    res.json({
+      message: "Database seeded successfully!",
+      credentials: result
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.use("/api/auth", authRoutes);
