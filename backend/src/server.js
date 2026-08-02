@@ -10,19 +10,25 @@ dotenv.config();
 const port = process.env.PORT || 5000;
 
 const bootstrap = async () => {
-  await connectDB();
-
   const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 
-  startGpsSimulator();
+  try {
+    await connectDB();
+    startGpsSimulator();
+  } catch (error) {
+    console.error("MongoDB Connection Error:", error.message);
+    console.warn("Server is running, but database is disconnected. Please check MONGO_URI and Atlas IP Whitelist.");
+  }
 
   const shutdown = async (signal) => {
     console.log(`Received ${signal}. Gracefully shutting down...`);
     stopGpsSimulator();
     server.close(async () => {
-      await mongoose.connection.close();
+      if (mongoose.connection.readyState !== 0) {
+        await mongoose.connection.close();
+      }
       process.exit(0);
     });
   };
@@ -31,7 +37,4 @@ const bootstrap = async () => {
   process.on("SIGTERM", () => shutdown("SIGTERM"));
 };
 
-bootstrap().catch((error) => {
-  console.error("Failed to start server:", error.message);
-  process.exit(1);
-});
+bootstrap();
