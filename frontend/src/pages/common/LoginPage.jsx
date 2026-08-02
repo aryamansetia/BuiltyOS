@@ -37,9 +37,14 @@ function LoginPage() {
     setInfoMessage("");
 
     try {
-      await sendOTP(form.email);
+      const res = await sendOTP(form.email);
       setOtpSent(true);
-      setInfoMessage("Verification code sent to your email! Check your inbox or console.");
+      if (res?.demoOtp) {
+        setForm((prev) => ({ ...prev, otp: res.demoOtp }));
+        setInfoMessage(`✅ Verification code generated: ${res.demoOtp} (Auto-filled for testing!)`);
+      } else {
+        setInfoMessage("Verification code sent to your email! Check your inbox or console.");
+      }
     } catch (err) {
       setError(err.message);
     } finally {

@@ -94,10 +94,11 @@ export const sendOTP = asyncHandler(async (req, res) => {
   });
 
   // Send Email
-  await sendOTPEmail(normalizedEmail, otpCode);
+  const mailResult = await sendOTPEmail(normalizedEmail, otpCode);
 
   return res.json({
-    message: "Verification code sent to email successfully"
+    message: "Verification code sent successfully",
+    demoOtp: mailResult.mode === "console" ? otpCode : undefined
   });
 });
 
