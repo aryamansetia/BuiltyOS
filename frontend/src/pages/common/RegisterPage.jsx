@@ -41,9 +41,11 @@ function RegisterPage() {
     try {
       const res = await sendOTP(form.email);
       setOtpSent(true);
-      if (res?.demoOtp) {
+      if (res?.mode === "smtp") {
+        setInfoMessage("📩 Real email sent to your inbox via Brevo! Please check your email.");
+      } else if (res?.demoOtp) {
         setForm((prev) => ({ ...prev, otp: res.demoOtp }));
-        setInfoMessage(`✅ Verification code generated: ${res.demoOtp} (Auto-filled for testing!)`);
+        setInfoMessage(`✅ Verification code generated: ${res.demoOtp} ${res.smtpError ? `(SMTP Notice: ${res.smtpError})` : ""}`);
       } else {
         setInfoMessage("Verification code sent! Please check your email inbox.");
       }

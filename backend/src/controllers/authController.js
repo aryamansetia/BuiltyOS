@@ -98,6 +98,8 @@ export const sendOTP = asyncHandler(async (req, res) => {
 
   return res.json({
     message: "Verification code sent successfully",
+    mode: mailResult.mode,
+    smtpError: mailResult.error,
     demoOtp: mailResult.mode === "console" ? otpCode : undefined
   });
 });
