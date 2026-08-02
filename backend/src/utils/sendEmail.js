@@ -34,8 +34,10 @@ export const sendOTPEmail = async (email, otp) => {
       }
     });
 
+    const senderEmail = process.env.SMTP_FROM || (smtpUser.includes("@smtp-brevo.com") ? "builtyos@gmail.com" : smtpUser);
+
     const mailOptions = {
-      from: `"BuiltyOS" <${smtpUser}>`,
+      from: `"BuiltyOS" <${senderEmail}>`,
       to: email,
       subject: `Your BuiltyOS Verification Code: ${otp}`,
       html: `
