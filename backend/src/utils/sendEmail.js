@@ -22,11 +22,12 @@ export const sendOTPEmail = async (email, otp) => {
       host: smtpHost,
       port: Number(smtpPort),
       secure: Number(smtpPort) === 465,
+      requireTLS: Number(smtpPort) === 587,
       auth: {
         user: smtpUser,
         pass: smtpPass
       },
-      connectionTimeout: 10000, // 10s timeout for cloud environments like Render
+      connectionTimeout: 10000,
       greetingTimeout: 10000,
       socketTimeout: 10000,
       tls: {
@@ -34,7 +35,7 @@ export const sendOTPEmail = async (email, otp) => {
       }
     });
 
-    const senderEmail = process.env.SMTP_FROM || (smtpUser.includes("@smtp-brevo.com") ? "builtyos@gmail.com" : smtpUser);
+    const senderEmail = process.env.SMTP_FROM || "aryamansetia@gmail.com";
 
     const mailOptions = {
       from: `"BuiltyOS" <${senderEmail}>`,
@@ -52,12 +53,11 @@ export const sendOTPEmail = async (email, otp) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log(`✅ [EMAIL DELIVERED VIA SMTP] To: ${email}`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`✅ [EMAIL DELIVERED VIA SMTP] To: ${email}`, info.messageId);
     return { success: true, mode: "smtp" };
   } catch (error) {
-    console.error("⚠️ SMTP Send Mail Error:", error);
-    console.log("ℹ️ Falling back to console OTP code delivery.");
-    return { success: true, mode: "console", error: error.message };
+    console.error("⚠️ SMTP Send Mail Error Details:", error);
+    return { success: true, mode: "console", error: error.message || String(error) };
   }
 };
