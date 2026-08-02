@@ -26,9 +26,12 @@ export const sendOTPEmail = async (email, otp) => {
         user: smtpUser,
         pass: smtpPass
       },
-      connectionTimeout: 4000,
-      greetingTimeout: 4000,
-      socketTimeout: 4000
+      connectionTimeout: 10000, // 10s timeout for cloud environments like Render
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
     const mailOptions = {
@@ -48,9 +51,10 @@ export const sendOTPEmail = async (email, otp) => {
     };
 
     await transporter.sendMail(mailOptions);
+    console.log(`✅ [EMAIL DELIVERED VIA SMTP] To: ${email}`);
     return { success: true, mode: "smtp" };
   } catch (error) {
-    console.error("⚠️ SMTP Send Mail Error:", error.message);
+    console.error("⚠️ SMTP Send Mail Error:", error);
     console.log("ℹ️ Falling back to console OTP code delivery.");
     return { success: true, mode: "console", error: error.message };
   }
