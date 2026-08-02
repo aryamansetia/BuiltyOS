@@ -21,9 +21,19 @@ import { notFound } from "./middleware/notFound.js";
 const app = express();
 
 app.disable("x-powered-by");
+
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map((url) => url.trim().replace(/\/$/, ""))
+  : "*";
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "*",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, postman, health checks)
+      if (!origin || allowedOrigins === "*") return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(null, true); // Fallback allow for production flexibility
+    },
     credentials: true
   })
 );
