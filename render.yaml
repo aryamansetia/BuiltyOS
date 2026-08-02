@@ -21,8 +21,9 @@ services:
       - key: GPS_SIMULATION_INTERVAL_MS
         value: 20000
 
-  - type: static
+  - type: web
     name: builtyos-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
